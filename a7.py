@@ -66,9 +66,11 @@ class BayesClassifier:
         # enumerate function, which loops over something and has an automatic counter.
         # write something like this to track progress (note the `# type: ignore` comment
         # which tells mypy we know better and it shouldn't complain at us on this line):
-        # for index, filename in enumerate(files, 1): # type: ignore
-        #     print(f"Training on file {index} of {len(files)}")
+        for index, filename in enumerate(files, 1): # type: ignore
+            print(f"Training on file {index} of {len(files)}")
         #     <the rest of your code for updating frequencies here>
+            text = self.load_file(os.path.join(self.training_data_directory, filename))
+            token = self.tokenize(text)
 
 
         # we want to fill pos_freqs and neg_freqs with the correct counts of words from
