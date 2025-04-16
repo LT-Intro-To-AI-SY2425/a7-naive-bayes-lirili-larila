@@ -177,10 +177,11 @@ class BayesClassifier:
                 pos_score += math.log(pos_freqs / (pos_denominator + vocab_size))
                 neg_score += math.log(neg_freqs / (neg_denominator + vocab_size))
 
-        print(pos_score, neg_score)
+        #print(pos_score, neg_score)
         # for debugging purposes, it may help to print the overall positive and negative
         # probabilities
-        
+        print(f"Positive Probability: {pos_score}")
+        print(f"Negative Probability: {neg_score}")
 
         # determine whether positive or negative was more probable (i.e. which one was
         # larger)
