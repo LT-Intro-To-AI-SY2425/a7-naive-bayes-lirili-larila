@@ -1,3 +1,5 @@
+#Jack Hughes and Joun Hyder
+
 import math, os, pickle, re
 from typing import Tuple, List, Dict
 
@@ -108,6 +110,7 @@ class BayesClassifier:
 
 
     def classify(self, text: str) -> str:
+        
         """Classifies given text as positive, negative or neutral from calculating the
         most likely document class to which the target string belongs
 
@@ -118,24 +121,49 @@ class BayesClassifier:
             classification, either positive, negative or neutral
         """
         # TODO: fill me out
+        tokens = self.tokenize(text)
 
+  
+        prob_positive = 0
+        prob_negative = 0
+
+    
+        total_pos_words = sum(self.pos_freqs.values())
+        total_neg_words = sum(self.neg_freqs.values())
+
+    
+        vocab_size = len(set(self.pos_freqs.keys()).union(self.neg_freqs.keys()))
+
+    
+        for token in tokens:
+        
+            pos_count = self.pos_freqs.get(token, 0)
+            prob_pos = (pos_count + 1) / (total_pos_words + vocab_size)  
+            prob_positive += math.log(prob_pos)
+
+       
+            neg_count = self.neg_freqs.get(token, 0)
+            prob_neg = (neg_count + 1) / (total_neg_words + vocab_size)  
+            prob_negative += math.log(prob_neg)
+
+        if prob_positive >= prob_negative:
+            return "positive"
+        else:
+            return "negative"
         
         # get a list of the individual tokens that occur in text
-        tokens = self.tokenize(text)
+        
 
         # create some variables to store the positive and negative probability. since
         # we will be adding logs of probabilities, the initial values for the positive
         # and negative probabilities are set to 0
-        pos_score = 0
-        neg_score = 0
+        
 
         # get the sum of all of the frequencies of the features in each document class
         # (i.e. how many words occurred in all documents for the given class) - this
         # will be used in calculating the probability of each document class given each
         # individual feature
-        pos_denominator = sum(self.pos_freqs.values())
-        neg_denominator = sum(self.neg_freqs.values())
-
+        
 
         # for each token in the text, calculate the probability of it occurring in a
         # postive document and in a negative document and add the logs of those to the
@@ -153,6 +181,7 @@ class BayesClassifier:
         
 
         # return a string of "positive" or "negative"
+
 
     def load_file(self, filepath: str) -> str:
         """Loads text of given file
